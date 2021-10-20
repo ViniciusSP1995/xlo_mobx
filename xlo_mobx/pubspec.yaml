@@ -43,6 +43,8 @@ dependencies:
   image_cropper: ^1.4.1
   dio: ^4.0.0
   shared_preferences: ^2.0.8
+  path: ^1.8.0
+  cached_network_image: ^3.1.0
 
 dev_dependencies:
   flutter_test:

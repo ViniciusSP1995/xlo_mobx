@@ -12,7 +12,9 @@ class CategoryField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Observer(
       builder: (_){
-        return ListTile(
+        return Column(
+          children: [  
+          ListTile(
           title: createStore.category == null ? Text(
             'Categoria *',
             style: TextStyle(
@@ -47,6 +49,31 @@ class CategoryField extends StatelessWidget {
             createStore.setCategory(category);
           }
           }
+        ),
+        if(createStore.categoryError != null)
+        Container(
+          alignment: Alignment.centerLeft,
+          decoration: BoxDecoration(
+            border: Border(top: BorderSide(color: Colors.red)),
+          ),
+          padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
+          child: Text(
+            createStore.categoryError,
+            style: TextStyle(
+              color: Colors.red,
+              fontSize: 12,
+            )
+          )
+        )
+        else
+          Container(
+            decoration: BoxDecoration(
+              border: Border(top: BorderSide(color: Colors.grey[500]
+              ),
+              ),
+            )
+          )
+          ]
         );
    
       }

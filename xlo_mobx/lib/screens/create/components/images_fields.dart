@@ -21,7 +21,10 @@ class ImagesField extends StatelessWidget {
       Navigator.of(context).pop();
     }
 
-    return Container(
+    return Column(
+      children: [  
+        Container(
+      
       color: Colors.grey[200],
       height: 120,
       child: Observer(
@@ -90,6 +93,30 @@ class ImagesField extends StatelessWidget {
       );
         }
       )
+    ),
+    Observer(
+      builder: (_) {
+ if(createStore.imagesError != null)
+    return Container(
+      alignment: Alignment.centerLeft,
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(color: Colors.red),
+        ),
+      ),
+      padding: const EdgeInsets.fromLTRB(16 ,8 ,0 , 0),
+      child: Text(
+        createStore.imagesError,
+        style: TextStyle(
+          color: Colors.red,
+          fontSize: 12,
+        )
+      )
+    );
+    else return Container();       
+      }
+    )
+      ],
     );
   }
 }
