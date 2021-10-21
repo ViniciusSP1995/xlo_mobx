@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
+import 'package:xlo_mobx/helpers/extensions.dart';
 import 'package:xlo_mobx/models/ad.dart';
 import 'package:xlo_mobx/models/address.dart';
 import 'package:xlo_mobx/models/category.dart';
@@ -16,6 +17,22 @@ abstract class _CreateStore with Store {
 /*   _CreateStore(this.ad);
 
   final Ad ad; */
+
+  _CreateStore(this.ad) {
+    title = ad.title ?? '';
+    description = ad.description ?? '';
+    images = ad.images.asObservable();
+    category = ad.category;
+    priceText = ad.price?.toStringAsFixed(2) ?? '';
+    hidePhone = ad.hidePhone;
+
+    if(ad.address != null)
+    cepStore = CepStore(ad.address.cep);
+    else 
+    cepStore = CepStore(null);
+  }
+
+  final Ad ad;
 
   ObservableList images = ObservableList();
 
@@ -72,7 +89,7 @@ abstract class _CreateStore with Store {
     else return 'Campo obrigatório';
   }
 
-  CepStore cepStore = CepStore();
+  CepStore cepStore;
 
   
   @computed
@@ -136,8 +153,6 @@ abstract class _CreateStore with Store {
 
   @action
   Future<void> _send() async {
-
-    final ad = Ad();
 
     ad.title = title;
     ad.description = description;

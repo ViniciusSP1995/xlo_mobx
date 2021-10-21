@@ -13,10 +13,12 @@ import 'package:xlo_mobx/stores/filter_store.dart';
 
 class AdRepository {
 
-  Future<List<Ad>> getHomeAdList({FilterStore filter, String search, Category category}) async {
+  Future<List<Ad>> getHomeAdList({FilterStore filter, String search, Category category, int page}) async {
     final queryBuilder = QueryBuilder<ParseObject>(ParseObject(keyAdTable));
 
     queryBuilder.includeObject([keyAdOwner, keyAdCategory]); //traz o usuario vinculado com o anuncio e a categoria
+
+    queryBuilder.setAmountToSkip(page * 20); // pular pagína e trazer os próximos 20
 
 
     queryBuilder.setLimit(20); // limita anúncios
@@ -94,6 +96,8 @@ class AdRepository {
 
     final adObject = ParseObject(keyAdTable);
 
+    if(ad.id != null) adObject.objectId = ad.id; //
+
     final parseAcl = ParseACL(owner: parseUser);
     parseAcl.setPublicReadAccess(allowed: true);
     parseAcl.setPublicWriteAccess(allowed: false);
@@ -152,5 +156,24 @@ class AdRepository {
       return Future.error('Falha ao salvar imagens');
     }
     
+  }
+
+  Future<List<Ad>> getMyAds(User user) async {
+    final currentUser = ParseUser('','','')..set(keyUserId, user.id);
+
+    final queryBuilder = QueryBuilder<ParseObject>(ParseObject(keyAdTable));
+    queryBuilder.setLimit(100);
+    queryBuilder.orderByDescending(keyAdCreatedAt);
+    queryBuilder.whereEqualTo(keyAdOwner, currentUser.toPointer());
+    queryBuilder.includeObject([keyAdCategory, keyAdOwner]);
+
+    final response = await queryBuilder.query();
+    if (response.success && response.results != null) {
+    return response.results.map((po) => Ad.fromParse(po)).toList();
+    } else if (response.success && response.results == null) {
+    return [];
+    } else {
+    return Future.error(ParseErrors.getDescription(response.error.code));
+    }
   }
 }

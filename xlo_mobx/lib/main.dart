@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:xlo_mobx/repositories/cep_repository.dart';
 import 'package:xlo_mobx/repositories/ibge_repository.dart';
@@ -52,6 +53,14 @@ class MyApp extends StatelessWidget {
         ),
         cursorColor: Colors.orange,
       ),
+      supportedLocales: const  [ 
+        Locale('pt', 'BR'),
+      ],
+      localizationsDelegates: [ 
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
       home: BaseScreen(),
     );
   }

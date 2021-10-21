@@ -45,10 +45,17 @@ dependencies:
   shared_preferences: ^2.0.8
   path: ^1.8.0
   cached_network_image: ^3.1.0
+  intl: ^0.17.0
+  carousel_pro: ^1.0.0
+  readmore: ^2.0.0
+  flutter_localizations:
+    sdk: flutter
+  url_launcher: ^6.0.12
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
   
   mobx_codegen: ^2.0.4
   build_runner: ^1.8.0

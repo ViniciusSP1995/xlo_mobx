@@ -11,25 +11,44 @@ import 'package:xlo_mobx/screens/create/components/category_field.dart';
 import 'package:xlo_mobx/screens/create/components/cep_field.dart';
 import 'package:xlo_mobx/screens/create/components/hide_phone_field.dart';
 import 'package:xlo_mobx/screens/create/components/images_fields.dart';
+import 'package:xlo_mobx/screens/myads/myads_screen.dart';
 import 'package:xlo_mobx/stores/create_store.dart';
 import 'package:xlo_mobx/stores/page_store.dart';
 
 
 class CreateScreen extends StatefulWidget {
+  CreateScreen({this.ad});
+
+  final Ad ad;
 
   @override
-  _CreateScreenState createState() => _CreateScreenState();
+  _CreateScreenState createState() => _CreateScreenState(ad);
 }
 
 class _CreateScreenState extends State<CreateScreen> {
-    final CreateStore createStore = CreateStore();
+    
+    _CreateScreenState(Ad ad) :
+    editing = ad != null,
+     createStore = CreateStore(ad ?? Ad());
+
+
+    final CreateStore createStore;
+
+    bool editing;
 
     @override
     void initState() {
       super.initState();
 
       when((_) => createStore.savedAd, (){
+        if(editing)
+        Navigator.of(context).pop(true);
+        else {
         GetIt.I<PageStore>().setPage(0);
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => MyAdsScreen(initialPage: 1)),
+        );
+        }
       });
     }
 
@@ -45,9 +64,9 @@ class _CreateScreenState extends State<CreateScreen> {
 
 
     return  Scaffold(
-        drawer: CustomDrawer(),
+        drawer: editing ? null : CustomDrawer(),
         appBar: AppBar(
-          title: Text('Criar Anúncio'),
+          title: Text(editing ? 'Editar Anúncio' : 'Criar Anúncio'),
           centerTitle: true,
         ),
         body: Container(
@@ -77,6 +96,7 @@ class _CreateScreenState extends State<CreateScreen> {
                           ImagesField(createStore),
                           Observer(builder: (_) {
                             return TextFormField(
+                              initialValue: createStore.title,
                               onChanged: createStore.setTitle,
                               decoration: InputDecoration(
                                 labelText: 'Título *',
@@ -88,6 +108,7 @@ class _CreateScreenState extends State<CreateScreen> {
                           }),
                           Observer(builder: (_) {
                             return TextFormField(
+                              initialValue: createStore.description,
                               onChanged: createStore.setDescription,
                               decoration: InputDecoration(
                                 labelText: 'Descrição *',
@@ -102,6 +123,7 @@ class _CreateScreenState extends State<CreateScreen> {
                           CepField(createStore),
                           Observer(builder: (_) {
                             return TextFormField(
+                              initialValue: createStore.priceText,
                                 onChanged: createStore.setPrice,
                                 decoration: InputDecoration(
                                   labelText: 'Preço *',
