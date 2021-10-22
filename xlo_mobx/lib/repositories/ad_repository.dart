@@ -14,6 +14,8 @@ import 'package:xlo_mobx/stores/filter_store.dart';
 class AdRepository {
 
   Future<List<Ad>> getHomeAdList({FilterStore filter, String search, Category category, int page}) async {
+
+    try{
     final queryBuilder = QueryBuilder<ParseObject>(ParseObject(keyAdTable));
 
     queryBuilder.includeObject([keyAdOwner, keyAdCategory]); //traz o usuario vinculado com o anuncio e a categoria
@@ -84,6 +86,9 @@ class AdRepository {
     
     } else {
       return Future.error(ParseErrors.getDescription(response.error.code));
+    }
+    } catch (e) {
+      return Future.error('Falha de conexão');
     }
   }
 
