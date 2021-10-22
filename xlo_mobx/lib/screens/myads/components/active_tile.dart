@@ -71,8 +71,10 @@ class ActiveTile extends StatelessWidget {
                 editAd(context);
                 break;
                 case 1:
+                soldAd(context);
                 break;
                 case 2:
+                deleteAd(context);
                 break;
                 }
               },
@@ -115,6 +117,49 @@ class ActiveTile extends StatelessWidget {
     );
     if(success != null && success) store.refresh();
 }
+
+void soldAd(BuildContext context) {
+  showDialog(context: context, builder: (_) => AlertDialog(
+    title: Text('Vendido'),
+    content: Text('Confirmar a vneda de ${ad.title}?'),
+    actions: [
+      FlatButton(
+        onPressed: Navigator.of(context).pop,
+        child: Text('Não'),
+        textColor: Colors.purple,
+      ),
+      FlatButton(
+        onPressed: (){
+          Navigator.of(context).pop();
+          store.soldAd(ad);
+        },
+        child: Text('Sim'),
+        textColor: Colors.red,
+        
+        )
+    ]
+  ));
+}
+
+void deleteAd(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (_) => AlertDialog(title: Text('Excluir'), content: Text('Confirmar a exclusão a de ${ad.title}?'), actions: [
+              FlatButton(
+                onPressed: Navigator.of(context).pop,
+                child: Text('Não'),
+                textColor: Colors.purple,
+              ),
+              FlatButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  store.deleteAd(ad);
+                },
+                child: Text('Sim'),
+                textColor: Colors.red,
+              )
+            ]));
+  }
 }
 class MenuChoice {
   MenuChoice({this.index, this.title, this.iconData});

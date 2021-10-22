@@ -25,4 +25,9 @@ _UserManagerStore() {
     final user = await UserRepository().currentUser();
     setUser(user);
   }
+
+  Future<void> logout() async {
+    await UserRepository().logout();
+    setUser(null);
+  }
 }

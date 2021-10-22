@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:xlo_mobx/components/empty_card.dart';
 import 'package:xlo_mobx/screens/myads/components/active_tile.dart';
 import 'package:xlo_mobx/screens/myads/components/pending_tile.dart';
 import 'package:xlo_mobx/screens/myads/components/sold_tile.dart';
@@ -60,7 +61,7 @@ class _MyAdsScreenState extends State<MyAdsScreen> with SingleTickerProviderStat
               Observer(
                 builder: (_) {
                   if(store.activeAds.isEmpty)
-                  return Container();
+                  return EmptyCard('Você não possui nenhum anúncio ativo');
 
                   return ListView.builder(
                     itemCount: store.activeAds.length,
@@ -71,7 +72,8 @@ class _MyAdsScreenState extends State<MyAdsScreen> with SingleTickerProviderStat
                 }
               ),
             Observer(builder: (_) {
-            if (store.pendingAds.isEmpty) return Container();
+            if (store.pendingAds.isEmpty)
+             return EmptyCard('Você não possui nenhum anúncio pendente.');
 
             return ListView.builder(
                 itemCount: store.pendingAds.length,
@@ -80,12 +82,12 @@ class _MyAdsScreenState extends State<MyAdsScreen> with SingleTickerProviderStat
                 });
           }),
             Observer(builder: (_) {
-            if (store.soldAds.isEmpty) return Container();
+            if (store.soldAds.isEmpty) return EmptyCard('Você não possui nenhum anúncio vendido');
 
             return ListView.builder(
                 itemCount: store.soldAds.length,
                 itemBuilder: (_, index) {
-                  return SoldTile(store.soldAds[index]);
+                  return SoldTile(store.soldAds[index], store);
                 });
           }),
             ]

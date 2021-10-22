@@ -9,13 +9,13 @@ part of 'home_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$HomeStore on _HomeStore, Store {
-  Computed<int> _$itemCountComputed;
+  Computed<int>? _$itemCountComputed;
 
   @override
   int get itemCount => (_$itemCountComputed ??=
           Computed<int>(() => super.itemCount, name: '_HomeStore.itemCount'))
       .value;
-  Computed<bool> _$showProgressComputed;
+  Computed<bool>? _$showProgressComputed;
 
   @override
   bool get showProgress =>

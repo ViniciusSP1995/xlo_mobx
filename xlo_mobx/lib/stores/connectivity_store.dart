@@ -1,0 +1,29 @@
+import 'package:mobx/mobx.dart';
+import 'package:data_connection_checker/data_connection_checker.dart';
+
+part 'connectivity_store.g.dart';
+
+class ConnectivityStore = _ConnectivityStore with _$ConnectivityStore;
+
+abstract class _ConnectivityStore with Store {
+
+  _ConnectivityStore(){
+    _setupListener();
+  }
+
+  void _setupListener() {
+
+    DataConnectionChecker().checkInterval = Duration(seconds: 5);
+
+    DataConnectionChecker().onStatusChange.listen((event) {
+      setConnected(event == DataConnectionStatus.connected);
+      print(connected);
+    });
+  }
+
+  @observable
+  bool connected = true;
+
+  @action 
+  void setConnected(bool value) => connected = value;
+}
